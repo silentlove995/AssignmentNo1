@@ -1,0 +1,23 @@
+package com.microservice.customer;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.microservice.customer",
+                "com.microservice.amqp",
+        }
+)
+@EnableFeignClients(
+        basePackages = "com.microservice.clients"
+)
+@EnableEurekaClient
+public class CustomerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(CustomerApplication.class, args);
+    }
+
+}
