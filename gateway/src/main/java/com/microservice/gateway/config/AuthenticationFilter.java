@@ -2,15 +2,12 @@ package com.microservice.gateway.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microservice.gateway.constants.AppConstant;
 import com.microservice.gateway.dto.VerifyPathBuilder;
 import com.microservice.gateway.reponse.ResponseError;
 import io.jsonwebtoken.Claims;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,38 +32,38 @@ public class AuthenticationFilter {
     @Autowired
     private VerifyPathBuilder verifyPathBuilder;
 
-    @SneakyThrows
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-
-        /*discoveryClient.getInstances("customer").forEach((ServiceInstance s) -> {
-            log.info(ToStringBuilder.reflectionToString(s));
-        });*/
-
-        if (routerValidator.isSecured.test(request)) {
-            if (this.isAuthMissing(request))
-                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), AUTHORIZATION_MISSING), HttpStatus.UNAUTHORIZED);
-
-            final String token = this.getAuthHeader(request).substring(AppConstant.O2Constants.TOKEN_PREFIX.length());
-
-            if (jwtUtil.isInvalid(token))
-                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), EXPIRED_DATE), HttpStatus.UNAUTHORIZED);
-
-            Claims claims = jwtUtil.getAllClaimsFromToken(token);
-            /*claims.get("roles").toString().replace("/[^a-zA-Z0-9]/g", "").split(",")*/
-            boolean isPathAndRole = verifyPathBuilder
-                    .setPath(exchange.getRequest().getPath().toString())
-                    .setRoles(claims.get("roles").toString().replace("[", "").replace("]", "").split(","))
-                    .build();
-
-            if (!isPathAndRole) {
-                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
-            }
-            this.populateRequestWithHeaders(exchange, claims);
-        }
-        return chain.filter(exchange);
-    }
+//    @SneakyThrows
+//    @Override
+//    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+//        ServerHttpRequest request = exchange.getRequest();
+//
+//        /*discoveryClient.getInstances("customer").forEach((ServiceInstance s) -> {
+//            log.info(ToStringBuilder.reflectionToString(s));
+//        });*/
+//
+//        if (routerValidator.isSecured.test(request)) {
+//            if (this.isAuthMissing(request))
+//                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), AUTHORIZATION_MISSING), HttpStatus.UNAUTHORIZED);
+//
+//            final String token = this.getAuthHeader(request).substring(AppConstant.O2Constants.TOKEN_PREFIX.length());
+//
+//            if (jwtUtil.isInvalid(token))
+//                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), EXPIRED_DATE), HttpStatus.UNAUTHORIZED);
+//
+//            Claims claims = jwtUtil.getAllClaimsFromToken(token);
+//            /*claims.get("roles").toString().replace("/[^a-zA-Z0-9]/g", "").split(",")*/
+//            boolean isPathAndRole = verifyPathBuilder
+//                    .setPath(exchange.getRequest().getPath().toString())
+//                    .setRoles(claims.get("roles").toString().replace("[", "").replace("]", "").split(","))
+//                    .build();
+//
+//            if (!isPathAndRole) {
+//                return this.onError(exchange, new ResponseError(HttpStatus.UNAUTHORIZED.toString(), UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+//            }
+//            this.populateRequestWithHeaders(exchange, claims);
+//        }
+//        return chain.filter(exchange);
+//    }
 
 
     /*PRIVATE*/

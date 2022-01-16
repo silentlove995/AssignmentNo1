@@ -1,6 +1,7 @@
 package com.microservice.gateway.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
@@ -23,19 +24,19 @@ public class GatewayConfig {
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("customer", r -> r.path("/customer/**", "/admin/customer/**", "/public/customer/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filter((GatewayFilter) filter))
                         .uri("lb://customer"))
                 .route("auth-service", r -> r.path("/auth/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filter((GatewayFilter) filter))
                         .uri("lb://auth-service"))
                 .route("users", r -> r.path("/user/**", "/admin/user/**", "/public/user/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filter((GatewayFilter) filter))
                         .uri("lb://users"))
                 .route("products", r -> r.path("/product/**", "/admin/product/**", "/public/product/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filter((GatewayFilter) filter))
                         .uri("lb://products"))
                 .route("orders", r -> r.path("/order/**", "/admin/order/**", "/public/order/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filter((GatewayFilter) filter))
                         .uri("lb://orders"))
                 .build();
     }

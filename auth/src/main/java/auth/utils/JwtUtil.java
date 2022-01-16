@@ -1,8 +1,8 @@
 package auth.utils;
 
 
-import com.microservices.auth.enitty.RoleEntity;
-import com.microservices.auth.enitty.UserEntity;
+import auth.enitty.RoleEntity;
+import auth.enitty.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

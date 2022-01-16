@@ -1,9 +1,9 @@
 package auth.api;
 
-import com.microservices.auth.dto.AuthRequest;
-import com.microservices.auth.dto.AuthResponse;
-import com.microservices.auth.service.AuthService;
-import com.microservices.utils.response.ResponseEntityBuilder;
+import auth.api.clients.ResponseEntityBuilder;
+import auth.dto.AuthRequest;
+import auth.dto.AuthResponse;
+import auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
